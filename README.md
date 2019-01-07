@@ -14,3 +14,8 @@ Los ficheros facilitados son los siguentes:
 * Código desarrollado en R: [Titanic.R](https://github.com/jgomezgar/TitanicPred/blob/master/Codigo/Titanic.R)
 * [Datos Fuente](https://github.com/jgomezgar/TitanicPred/tree/master/Data), compuesto por:
 
+| Data Source  | File | Lineas / Columnas | Función Original en Kraggle |
+| ------------- | ------------- |---------|---------|
+| Fuente 1 - completa  | train.csv  | 891 x 12 | Datos para crear el modelo |
+| Fuente 2 - incompleta  | test.csv  | 418 x 11 | Datos para comprobar el modelo |
+| Complemento Fuente2  | gender_submission.csv  | 418 x 2 | Resultados de supervivencia de los datos de test (ejemplo) |
