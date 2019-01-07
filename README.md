@@ -1,7 +1,7 @@
 # TitanicPred
 ## Práctica para la Limpieza y validación de datos
 
-Desarrollado por Jose Luis Gomez Garcia <jgomezgar@uoc.edu>
+Desarrollado por José Luis Gómez García: <jgomezgar@uoc.edu>
 
 - Basado en la competencia Kraggle sobre supervivencia en el Titanic: https://www.kaggle.com/c/titanic.
 - Desarrollado en R.
