@@ -9,9 +9,9 @@ library(ROCR)
 library(corrplot)
 
 ### Incluir Datasources
-Full_Source1 <- read.csv("C:/Users/esmijlmog/Google Drive/UOC/@@@@@@Data Science@@@@@/Tipología y ciclo de vida de los datos/Practica2/train.csv", stringsAsFactors = F, na.strings = c("NA", ""))
-Part1_Source2 <- read.csv("C:/Users/esmijlmog/Google Drive/UOC/@@@@@@Data Science@@@@@/Tipología y ciclo de vida de los datos/Practica2/test.csv", stringsAsFactors = F, na.strings = c("NA", ""))
-Part2_Source2 <- read.csv("C:/Users/esmijlmog/Google Drive/UOC/@@@@@@Data Science@@@@@/Tipología y ciclo de vida de los datos/Practica2/gender_submission.csv", stringsAsFactors = F, na.strings = c("NA", ""))
+Full_Source1 <- read.csv("./TipologÃ­a y ciclo de vida de los datos/Practica2/train.csv", stringsAsFactors = F, na.strings = c("NA", ""))
+Part1_Source2 <- read.csv("./TipologÃ­a y ciclo de vida de los datos/Practica2/test.csv", stringsAsFactors = F, na.strings = c("NA", ""))
+Part2_Source2 <- read.csv("./TipologÃ­a y ciclo de vida de los datos/Practica2/gender_submission.csv", stringsAsFactors = F, na.strings = c("NA", ""))
 
 ### Join de Part1_Source2 (test) & Part2_Source2 (gender_submission)
 ### para obtener una unica tabla con los mismos campos que Full_Source1 (train).
@@ -23,21 +23,21 @@ titanic <- rbind(Full_Source1, Full_Source2)
 str(titanic)
 summary(titanic)
 
-### NA´s Presentes en cada columas
+### NAÂ´s Presentes en cada columas
 sapply(titanic, function(x) {sum(is.na(x))})
 
 ### conversion a Factor
 titanic$Sex <- as.factor(titanic$Sex)
 titanic$Pclass <- as.factor(titanic$Pclass)
 
-###Extraer el Título de Nombre y Apellidos
+###Extraer el TÃ­tulo de Nombre y Apellidos
 titanic$Surname <- sapply(titanic$Name, function(x) {strsplit(x, split='[,.]')[[1]][1]})
 titanic$Surname <- sapply(titanic$Surname, function(x) {strsplit(x, split='[-]')[[1]][1]})
 titanic$TitleName <- sapply(titanic$Name, function(x) {strsplit(x, split='[,.]')[[1]][2]})
 titanic$TitleName <- sub(' ', '', titanic$TitleName)
 kable(table(titanic$Sex, titanic$TitleName))
 
-###Homogenizar la variable Título
+###Homogenizar la variable TÃ­tulo
 titanic$Title[titanic$TitleName %in% c("Mlle", "Ms","Mme","Mrs",'Master', 'Miss', 'Mr','Don', 'Dona')] <- 0
 titanic$Title[!(titanic$TitleName %in% c("Mlle", "Ms","Mme","Mrs",'Master', 'Miss', 'Mr','Don', 'Dona'))] <-1
 titanic$Title <- as.factor(titanic$Title)
@@ -87,7 +87,7 @@ TitanicPred <- subset(titanic, select = c('Survived', 'Title','Pclass', 'Sex', '
 summary (TitanicPred)
 
 library(nortest)
-### Comprobación de la normalidad
+### ComprobaciÃ³n de la normalidad
 alpha = 0.05
 col.names = colnames(TitanicPred)
 for (i in 1:ncol(TitanicPred)) {
@@ -95,14 +95,14 @@ for (i in 1:ncol(TitanicPred)) {
     p_val = ad.test(TitanicPred[,i])$p.value
     if (p_val < alpha) {
       cat(col.names[i])
-      cat(" NO sigue una distribución normal\n")
+      cat(" NO sigue una distribuciÃ³n normal\n")
     }else{
       cat(col.names[i])
-      cat(" SI sigue una distribución normal\n")
+      cat(" SI sigue una distribuciÃ³n normal\n")
     }
   }
 }
-### Comprobación de la homogeneidad de varianzas:
+### ComprobaciÃ³n de la homogeneidad de varianzas:
 fligner.test(Survived ~ Title, data = TitanicPred)
 fligner.test(Survived ~ Pclass, data = TitanicPred)
 fligner.test(Survived ~ Sex, data = TitanicPred)
@@ -110,7 +110,7 @@ fligner.test(Survived ~ Family, data = TitanicPred)
 fligner.test(Survived ~ Embarked, data = TitanicPred)
 
 
-### Coeficiente de correlación para cada variable cuantitativa
+### Coeficiente de correlaciÃ³n para cada variable cuantitativa
 TitanicPred$Survived <- as.factor(TitanicPred$Survived)
 TitanicPred$TitleNum <- as.numeric(TitanicPred$Title)
 TitanicPred$PclassNum <- as.numeric(TitanicPred$Pclass)
@@ -143,9 +143,9 @@ TitanicPred$Survived <- as.numeric(TitanicPred$Survived)
 
 ###Mujeres mejor supervivencia que hombres
 t.test(TitanicPred$Survived[TitanicPred$Sex=="female"],TitanicPred$Survived[TitanicPred$Sex=="male"],alternative="greater")
-### 1º clase mejor supervivencia que 2º clase
+### 1Âº clase mejor supervivencia que 2Âº clase
 t.test(TitanicPred$Survived[TitanicPred$Pclass==1],TitanicPred$Survived[TitanicPred$Pclass==2],alternative="greater")
-### 2º clase mejor supervivencia que 3º clase
+### 2Âº clase mejor supervivencia que 3Âº clase
 t.test(TitanicPred$Survived[TitanicPred$Pclass==2],TitanicPred$Survived[TitanicPred$Pclass==3],alternative="greater")
 ### Titulo honorifico mejor supervivencia que sin el
 t.test(TitanicPred$Survived[TitanicPred$Title==1],TitanicPred$Survived[TitanicPred$Title==0],alternative="greater")
